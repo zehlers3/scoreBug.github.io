@@ -4,16 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Score Control</title>
-    
-    <!-- Load Firebase (v8 - Works properly) -->
+
+    <!-- Load Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f8f8f8; }
+        .container { max-width: 400px; margin: auto; padding: 20px; }
+        .team-label { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .score { font-size: 40px; margin: 10px 0; }
+        .btn { font-size: 20px; padding: 10px 15px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
+        .btn-nebraska { background: red; color: white; }
+        .btn-opponent { background: black; color: white; }
+        .btn-reset { background: gray; color: white; width: 100%; }
+    </style>
 </head>
 <body>
-    <h2>Update Score</h2>
-    <label>Team A: <input type="number" id="teamA" value="0"></label>
-    <label>Team B: <input type="number" id="teamB" value="0"></label>
-    <button onclick="updateScore()">Update</button>
+    <div class="container">
+        <div class="team-label">Nebraska</div>
+        <div id="teamA" class="score">0</div>
+        <button class="btn btn-nebraska" onclick="addPoint('teamA')">+ Add Point</button>
+
+        <div class="team-label">Opponent</div>
+        <div id="teamB" class="score">0</div>
+        <button class="btn btn-opponent" onclick="addPoint('teamB')">+ Add Point</button>
+
+        <button class="btn btn-reset" onclick="resetScore()">Reset Score</button>
+    </div>
 
     <script>
         // Firebase Configuration
@@ -31,15 +49,28 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Define updateScore function (Now properly defined globally)
-        function updateScore() {
-            const teamA = parseInt(document.getElementById("teamA").value) || 0;
-            const teamB = parseInt(document.getElementById("teamB").value) || 0;
-
-            db.ref("score").set({ teamA, teamB })
-                .then(() => console.log("Score updated successfully"))
-                .catch(error => console.error("Error updating score:", error));
+        // Function to add a point to a team
+        function addPoint(team) {
+            const scoreRef = db.ref("score/" + team);
+            scoreRef.once("value", (snapshot) => {
+                let currentScore = snapshot.val() || 0;
+                scoreRef.set(currentScore + 1);
+            });
         }
+
+        // Function to reset the score
+        function resetScore() {
+            db.ref("score").set({ teamA: 0, teamB: 0 });
+        }
+
+        // Listen for score updates
+        db.ref("score").on("value", (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById("teamA").textContent = data.teamA;
+                document.getElementById("teamB").textContent = data.teamB;
+            }
+        });
     </script>
 </body>
 </html>
