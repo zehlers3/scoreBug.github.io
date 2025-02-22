@@ -10,18 +10,17 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        body { background: transparent; margin: 0; padding: 0; }
         .score-bug {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 300px;
-            padding: 20px;
+            padding: 10px 20px;
             background: rgba(0, 0, 0, 0.8);
             color: white;
-            font-size: 40px;
+            font-size: 32px;
             border-radius: 10px;
             text-align: center;
         }
@@ -29,19 +28,20 @@
             font-size: 24px;
             font-weight: bold;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-right: 10px;
         }
         .nebraska { color: red; }
-        .opponent { color: white; }
+        .opponent { color: white; margin-left: 10px; }
+        .score { font-size: 36px; font-weight: bold; padding: 0 10px; }
     </style>
 </head>
 <body>
     <div class="score-bug">
         <div class="team-name nebraska">Nebraska</div>
-        <div id="teamA">0</div>
-        <hr style="width: 80%; background: white; height: 2px; border: none; margin: 10px 0;">
+        <div id="teamA" class="score">0</div>
+        <div class="score">-</div>
+        <div id="teamB" class="score">0</div>
         <div class="team-name opponent">Opponent</div>
-        <div id="teamB">0</div>
     </div>
 
     <script>
