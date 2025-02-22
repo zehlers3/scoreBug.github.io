@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Score</title>
+    <style>
+        body { background: transparent; margin: 0; overflow: hidden; }
+        .score-bug {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 24px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-bug">
+        <span id="teamA">0</span> - <span id="teamB">0</span>
+    </div>
+
+    <script>
+        const ws = new WebSocket("wss://your-server.com"); // Replace with your WebSocket server URL
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            document.getElementById("teamA").textContent = data.teamA;
+            document.getElementById("teamB").textContent = data.teamB;
+        };
+    </script>
+</body>
+</html>
