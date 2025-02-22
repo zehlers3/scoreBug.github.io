@@ -16,30 +16,31 @@
             top: 10px;
             left: 10px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 10px 20px;
-            background: rgba(0, 0, 0, 0.8);
+            justify-content: space-between;
+            padding: 5px 15px;
+            background: rgba(0, 0, 0, 0.85);
             color: white;
-            font-size: 32px;
-            border-radius: 10px;
+            font-size: 20px;
+            border-radius: 8px;
             text-align: center;
+            min-width: 180px;
         }
-        .set-number { font-size: 24px; font-weight: bold; margin-bottom: 5px; }
-        .team-name { font-size: 24px; font-weight: bold; text-transform: uppercase; margin-right: 10px; }
-        .nebraska { color: white; }
-        .opponent { color: white; margin-left: 10px; }
-        .score { font-size: 36px; font-weight: bold; padding: 0 10px; }
-        .set-score { font-size: 20px; margin-top: 5px; }
+        .set-number { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .team-name { font-size: 18px; font-weight: bold; text-transform: uppercase; }
+        .nebraska { color: red; }
+        .opponent { color: white; }
+        .score { font-size: 24px; font-weight: bold; margin: 0 10px; }
+        .set-score { font-size: 16px; margin-top: 3px; }
     </style>
 </head>
 <body>
     <div class="score-bug">
         <div id="setNumber" class="set-number">1st Set</div>
         <div class="team-name nebraska">Nebraska</div>
-        <div id="teamA" class="score">0</div>
-        <div class="score">-</div>
-        <div id="teamB" class="score">0</div>
+        <div class="score">
+            <span id="teamA">0</span> - <span id="teamB">0</span>
+        </div>
         <div class="team-name opponent" id="opponentName">Opponent</div>
         <div class="set-score">
             <span id="teamSetA">0</span> - <span id="teamSetB">0</span>
@@ -66,17 +67,22 @@
         db.ref("score").on("value", (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                document.getElementById("teamA").textContent = data.teamA;
-                document.getElementById("teamB").textContent = data.teamB;
+                document.getElementById("teamA").textContent = data.teamA || 0;
+                document.getElementById("teamB").textContent = data.teamB || 0;
                 document.getElementById("teamSetA").textContent = data.teamSetA || 0;
                 document.getElementById("teamSetB").textContent = data.teamSetB || 0;
+                
+                // Update Opponent Name if changed
                 if (data.opponentName) {
                     document.getElementById("opponentName").textContent = data.opponentName;
                 }
-                let totalSets = data.teamSetA + data.teamSetB;
+
+                // Determine the current set number
+                let totalSets = (data.teamSetA || 0) + (data.teamSetB || 0);
                 let setText = (totalSets + 1) + "st Set";
                 if (totalSets + 1 === 2) setText = "2nd Set";
                 if (totalSets + 1 === 3) setText = "3rd Set";
+                if (totalSets + 1 >= 4) setText = (totalSets + 1) + "th Set";
                 document.getElementById("setNumber").textContent = setText;
             }
         });
