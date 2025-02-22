@@ -41,7 +41,7 @@
         <div id="teamA" class="score">0</div>
         <div class="score">-</div>
         <div id="teamB" class="score">0</div>
-        <div class="team-name opponent">Opponent</div>
+        <div class="team-name opponent" id="opponentName">Opponent</div>
     </div>
 
     <script>
@@ -60,12 +60,15 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Listen for score updates
+        // Listen for score & opponent name updates
         db.ref("score").on("value", (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 document.getElementById("teamA").textContent = data.teamA;
                 document.getElementById("teamB").textContent = data.teamB;
+                if (data.opponentName) {
+                    document.getElementById("opponentName").textContent = data.opponentName;
+                }
             }
         });
     </script>
