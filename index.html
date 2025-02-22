@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Score</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    
+    <!-- Load Firebase (v8 - Works for non-modular environments) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         body { background: transparent; margin: 0; overflow: hidden; }
         .score-bug {
@@ -26,30 +29,28 @@
     </div>
 
     <script>
-        // Ensure Firebase initializes after the DOM loads
-        document.addEventListener("DOMContentLoaded", function () {
-            const firebaseConfig = {
-                apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
-                authDomain: "scorebug-e10cd.firebaseapp.com",
-                databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
-                projectId: "scorebug-e10cd",
-                storageBucket: "scorebug-e10cd.appspot.com",
-                messagingSenderId: "649232589580",
-                appId: "1:649232589580:web:627d52730df39d8e50df29"
-            };
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
+            authDomain: "scorebug-e10cd.firebaseapp.com",
+            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
+            projectId: "scorebug-e10cd",
+            storageBucket: "scorebug-e10cd.appspot.com",
+            messagingSenderId: "649232589580",
+            appId: "1:649232589580:web:627d52730df39d8e50df29"
+        };
 
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-            // Listen for score updates
-            db.ref("score").on("value", (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    document.getElementById("teamA").textContent = data.teamA;
-                    document.getElementById("teamB").textContent = data.teamB;
-                }
-            });
+        // Listen for score updates (Now executes immediately)
+        db.ref("score").on("value", (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById("teamA").textContent = data.teamA;
+                document.getElementById("teamB").textContent = data.teamB;
+            }
         });
     </script>
 </body>
