@@ -44,6 +44,7 @@
         <button class="btn btn-remove" onclick="removeSetWin('teamSetB')">Remove Set Win</button>
 
         <button class="btn btn-reset" onclick="resetScore()">Reset Score</button>
+        <button class="btn btn-reset" onclick="resetAll()">Reset All</button>
     </div>
 
     <script>
@@ -85,7 +86,13 @@
             });
         }
 
+        // Reset only the current score
         function resetScore() { 
+            db.ref("score").update({ teamA: 0, teamB: 0 });
+        }
+
+        // Reset score, sets, and opponent name
+        function resetAll() { 
             db.ref("score").set({ teamA: 0, teamB: 0, teamSetA: 0, teamSetB: 0, opponentName: "Opponent" });
         }
 
