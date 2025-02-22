@@ -4,28 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Score</title>
-    
-    <!-- Load Firebase (v8 - Works for non-modular environments) -->
+
+    <!-- Load Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        body { background: transparent; margin: 0; overflow: hidden; }
+        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .score-bug {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
             color: white;
-            font-size: 24px;
+            font-size: 40px;
             border-radius: 10px;
+            text-align: center;
         }
+        .team-name {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .nebraska { color: red; }
+        .opponent { color: white; }
     </style>
 </head>
 <body>
     <div class="score-bug">
-        <span id="teamA">0</span> - <span id="teamB">0</span>
+        <div class="team-name nebraska">Nebraska</div>
+        <div id="teamA">0</div>
+        <hr style="width: 80%; background: white; height: 2px; border: none; margin: 10px 0;">
+        <div class="team-name opponent">Opponent</div>
+        <div id="teamB">0</div>
     </div>
 
     <script>
@@ -44,7 +60,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Listen for score updates (Now executes immediately)
+        // Listen for score updates
         db.ref("score").on("value", (snapshot) => {
             const data = snapshot.val();
             if (data) {
