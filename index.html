@@ -26,16 +26,22 @@
     </div>
 
     <script>
-        // Firebase Configuration
+        // Use your correct Firebase Config
         const firebaseConfig = {
-            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com/" // Your Firebase URL
+            apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
+            authDomain: "scorebug-e10cd.firebaseapp.com",
+            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
+            projectId: "scorebug-e10cd",
+            storageBucket: "scorebug-e10cd.firebasestorage.app",
+            messagingSenderId: "649232589580",
+            appId: "1:649232589580:web:627d52730df39d8e50df29"
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Listen for score updates in Firebase
+        // Listen for score updates from Firebase
         db.ref("score").on("value", (snapshot) => {
             const data = snapshot.val();
             if (data) {
