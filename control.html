@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Score Control</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    
+    <!-- Load Firebase (v8 - Works properly) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
     <h2>Update Score</h2>
@@ -14,32 +16,30 @@
     <button onclick="updateScore()">Update</button>
 
     <script>
-        // Ensure Firebase initializes after the DOM is loaded
-        document.addEventListener("DOMContentLoaded", function () {
-            const firebaseConfig = {
-                apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
-                authDomain: "scorebug-e10cd.firebaseapp.com",
-                databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
-                projectId: "scorebug-e10cd",
-                storageBucket: "scorebug-e10cd.appspot.com",
-                messagingSenderId: "649232589580",
-                appId: "1:649232589580:web:627d52730df39d8e50df29"
-            };
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
+            authDomain: "scorebug-e10cd.firebaseapp.com",
+            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
+            projectId: "scorebug-e10cd",
+            storageBucket: "scorebug-e10cd.appspot.com",
+            messagingSenderId: "649232589580",
+            appId: "1:649232589580:web:627d52730df39d8e50df29"
+        };
 
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-            // Function to update score
-            window.updateScore = function () {
-                const teamA = parseInt(document.getElementById("teamA").value) || 0;
-                const teamB = parseInt(document.getElementById("teamB").value) || 0;
+        // Define updateScore function (Now properly defined globally)
+        function updateScore() {
+            const teamA = parseInt(document.getElementById("teamA").value) || 0;
+            const teamB = parseInt(document.getElementById("teamB").value) || 0;
 
-                db.ref("score").set({ teamA, teamB })
-                    .then(() => console.log("Score updated successfully"))
-                    .catch(error => console.error("Error updating score:", error));
-            };
-        });
+            db.ref("score").set({ teamA, teamB })
+                .then(() => console.log("Score updated successfully"))
+                .catch(error => console.error("Error updating score:", error));
+        }
     </script>
 </body>
 </html>
