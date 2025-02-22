@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Score</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <style>
         body { background: transparent; margin: 0; overflow: hidden; }
         .score-bug {
@@ -24,13 +26,23 @@
     </div>
 
     <script>
-        const ws = new WebSocket("wss://your-server.com"); // Replace with your WebSocket server URL
-
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            document.getElementById("teamA").textContent = data.teamA;
-            document.getElementById("teamB").textContent = data.teamB;
+        // Firebase Configuration
+        const firebaseConfig = {
+            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com/" // Your Firebase URL
         };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Listen for score updates in Firebase
+        db.ref("score").on("value", (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById("teamA").textContent = data.teamA;
+                document.getElementById("teamB").textContent = data.teamB;
+            }
+        });
     </script>
 </body>
 </html>
