@@ -26,28 +26,30 @@
     </div>
 
     <script>
-        // Use your correct Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
-            authDomain: "scorebug-e10cd.firebaseapp.com",
-            databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
-            projectId: "scorebug-e10cd",
-            storageBucket: "scorebug-e10cd.firebasestorage.app",
-            messagingSenderId: "649232589580",
-            appId: "1:649232589580:web:627d52730df39d8e50df29"
-        };
+        // Ensure Firebase initializes after the DOM loads
+        document.addEventListener("DOMContentLoaded", function () {
+            const firebaseConfig = {
+                apiKey: "AIzaSyBpPWwccsG3iSN5uoD7j4GDXH1R2Gitivo",
+                authDomain: "scorebug-e10cd.firebaseapp.com",
+                databaseURL: "https://scorebug-e10cd-default-rtdb.firebaseio.com",
+                projectId: "scorebug-e10cd",
+                storageBucket: "scorebug-e10cd.appspot.com",
+                messagingSenderId: "649232589580",
+                appId: "1:649232589580:web:627d52730df39d8e50df29"
+            };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
 
-        // Listen for score updates from Firebase
-        db.ref("score").on("value", (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                document.getElementById("teamA").textContent = data.teamA;
-                document.getElementById("teamB").textContent = data.teamB;
-            }
+            // Listen for score updates
+            db.ref("score").on("value", (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById("teamA").textContent = data.teamA;
+                    document.getElementById("teamB").textContent = data.teamB;
+                }
+            });
         });
     </script>
 </body>
