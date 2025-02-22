@@ -15,26 +15,27 @@
         .team-label { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
         .score { font-size: 40px; margin: 10px 0; }
         .btn { font-size: 20px; padding: 10px 15px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
-        .btn-nebraska { background: red; color: white; }
-        .btn-opponent { background: black; color: white; }
-        .btn-reset { background: gray; color: white; width: 100%; }
         .btn-remove { background: darkgray; color: white; }
-        .opponent-name { font-size: 24px; border: none; text-align: center; width: 100%; margin-bottom: 10px; }
+        .btn-reset { background: gray; color: white; width: 100%; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="team-label">Nebraska</div>
         <div id="teamA" class="score">0</div>
-        <button class="btn btn-nebraska" onclick="addPoint('teamA')">+ Add Point</button>
+        <button class="btn" onclick="addPoint('teamA')">+ Add Point</button>
         <button class="btn btn-remove" onclick="removePoint('teamA')">- Remove Point</button>
+        <button class="btn" onclick="addSetWin('teamSetA')">🏆 Add Set Win</button>
+        <button class="btn btn-remove" onclick="removeSetWin('teamSetA')">❌ Remove Set Win</button>
 
         <div class="team-label">
-            <input type="text" id="opponentName" class="opponent-name" value="Opponent" onblur="updateOpponentName()">
+            <input type="text" id="opponentName" value="Opponent" onblur="updateOpponentName()">
         </div>
         <div id="teamB" class="score">0</div>
-        <button class="btn btn-opponent" onclick="addPoint('teamB')">+ Add Point</button>
+        <button class="btn" onclick="addPoint('teamB')">+ Add Point</button>
         <button class="btn btn-remove" onclick="removePoint('teamB')">- Remove Point</button>
+        <button class="btn" onclick="addSetWin('teamSetB')">🏆 Add Set Win</button>
+        <button class="btn btn-remove" onclick="removeSetWin('teamSetB')">❌ Remove Set Win</button>
 
         <button class="btn btn-reset" onclick="resetScore()">Reset Score</button>
     </div>
@@ -51,54 +52,15 @@
             appId: "1:649232589580:web:627d52730df39d8e50df29"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Function to add a point to a team
-        function addPoint(team) {
-            const scoreRef = db.ref("score/" + team);
-            scoreRef.once("value", (snapshot) => {
-                let currentScore = snapshot.val() || 0;
-                scoreRef.set(currentScore + 1);
-            });
-        }
-
-        // Function to remove a point from a team
-        function removePoint(team) {
-            const scoreRef = db.ref("score/" + team);
-            scoreRef.once("value", (snapshot) => {
-                let currentScore = snapshot.val() || 0;
-                if (currentScore > 0) {
-                    scoreRef.set(currentScore - 1);
-                }
-            });
-        }
-
-        // Function to reset the score
-        function resetScore() {
-            db.ref("score").set({ teamA: 0, teamB: 0 });
-        }
-
-        // Function to update the opponent name
-        function updateOpponentName() {
-            const newName = document.getElementById("opponentName").value.trim();
-            if (newName) {
-                db.ref("score/opponentName").set(newName);
-            }
-        }
-
-        // Listen for score updates
-        db.ref("score").on("value", (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                document.getElementById("teamA").textContent = data.teamA;
-                document.getElementById("teamB").textContent = data.teamB;
-                if (data.opponentName) {
-                    document.getElementById("opponentName").value = data.opponentName;
-                }
-            }
-        });
+        function addPoint(team) { db.ref("score/" + team).once("value").then(snapshot => db.ref("score/" + team).set((snapshot.val() || 0) + 1)); }
+        function removePoint(team) { db.ref("score/" + team).once("value").then(snapshot => { if (snapshot.val() > 0) db.ref("score/" + team).set(snapshot.val() - 1); }); }
+        function addSetWin(team) { db.ref("score/" + team).once("value").then(snapshot => db.ref("score/" + team).set((snapshot.val() || 0) + 1)); }
+        function removeSetWin(team) { db.ref("score/" + team).once("value").then(snapshot => { if (snapshot.val() > 0) db.ref("score/" + team).set(snapshot.val() - 1); }); }
+        function resetScore() { db.ref("score").set({ teamA: 0, teamB: 0, teamSetA: 0, teamSetB: 0 }); }
+        function updateOpponentName() { db.ref("score/opponentName").set(document.getElementById("opponentName").value.trim()); }
     </script>
 </body>
 </html>
