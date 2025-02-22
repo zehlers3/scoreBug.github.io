@@ -10,41 +10,36 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <style>
-        body { background: transparent; margin: 0; padding: 0; }
+        body { background: transparent; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .score-bug {
-            position: absolute;
-            top: 10px;
-            left: 10px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 5px 15px;
+            padding: 10px 20px;
             background: rgba(0, 0, 0, 0.85);
             color: white;
             font-size: 20px;
             border-radius: 8px;
             text-align: center;
-            min-width: 180px;
+            min-width: 200px;
         }
-        .set-number { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .team-name { font-size: 18px; font-weight: bold; text-transform: uppercase; }
+        .set-number { font-size: 22px; font-weight: bold; margin-bottom: 5px; }
+        .team-name { font-size: 20px; font-weight: bold; text-transform: uppercase; }
         .nebraska { color: red; }
         .opponent { color: white; }
-        .score { font-size: 24px; font-weight: bold; margin: 0 10px; }
-        .set-score { font-size: 16px; margin-top: 3px; }
+        .score { font-size: 26px; font-weight: bold; margin: 5px 0; }
+        .set-score { font-size: 18px; margin-top: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="score-bug">
         <div id="setNumber" class="set-number">1st Set</div>
-        <div class="team-name nebraska">Nebraska</div>
         <div class="score">
+            <span class="team-name nebraska">Nebraska</span> 
             <span id="teamA">0</span> - <span id="teamB">0</span>
+            <span class="team-name opponent" id="opponentName">Opponent</span>
         </div>
-        <div class="team-name opponent" id="opponentName">Opponent</div>
-        <div class="set-score">
-            <span id="teamSetA">0</span> - <span id="teamSetB">0</span>
-        </div>
+        <div class="set-score"><span id="teamSetA">0</span> - <span id="teamSetB">0</span></div>
     </div>
 
     <script>
