@@ -18,31 +18,46 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 15px;
+            padding: 10px 20px;
             background: rgba(0, 0, 0, 0.85);
             color: white;
             font-size: 18px;
             border-radius: 8px;
             text-align: center;
-            min-width: 200px;
+            min-width: 250px;
         }
-        .set-number { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
-        .team-name { font-size: 18px; font-weight: bold; text-transform: uppercase; }
-        .nebraska { color: white; }
-        .opponent { color: white; }
-        .score { font-size: 22px; font-weight: bold; margin: 5px 0; }
+        .set-number { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+        .score-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .team-name {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            flex: 1;
+            text-align: center;
+            max-width: 4ch; /* Limit name to 4 characters */
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .nebraska { color: red; text-align: left; margin-right: 20px; }
+        .opponent { color: white; text-align: right; margin-left: 20px; }
+        .score { font-size: 22px; font-weight: bold; margin: 0 20px; }
         .set-score { font-size: 16px; margin-top: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="score-bug">
         <div id="setNumber" class="set-number">1st Set</div>
-        <div class="score">
-            <span class="team-name nebraska">UNL</span> 
-            <span id="teamA">0</span> - <span id="teamB">0</span>
-            <span class="team-name opponent" id="opponentName">Opponent</span>
+        <div class="score-container">
+            <span class="team-name nebraska" id="teamNameA">UNL</span> 
+            <span id="teamA" class="score">0</span> - <span id="teamB" class="score">0</span>
+            <span class="team-name opponent" id="opponentName">OPP</span>
         </div>
-        <div class="set-score"><span id="teamSetA">0</span> - <span id="teamSetB">0</span></div>
+        <div class="set-score">Set Score: <span id="teamSetA">0</span> - <span id="teamSetB">0</span></div>
     </div>
 
     <script>
@@ -70,9 +85,12 @@
                 document.getElementById("teamSetA").textContent = data.teamSetA || 0;
                 document.getElementById("teamSetB").textContent = data.teamSetB || 0;
                 
-                // Update Opponent Name if changed
+                // Update Team Names with Max Length of 4 Characters
                 if (data.opponentName) {
-                    document.getElementById("opponentName").textContent = data.opponentName;
+                    document.getElementById("opponentName").textContent = data.opponentName.substring(0, 4).toUpperCase();
+                }
+                if (data.teamNameA) {
+                    document.getElementById("teamNameA").textContent = data.teamNameA.substring(0, 4).toUpperCase();
                 }
 
                 // Determine the current set number
