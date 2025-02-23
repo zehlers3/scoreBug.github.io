@@ -70,7 +70,6 @@ Before using the scorebug, set up Firebase:
 ## Customization
 - **Styling:** Modify CSS in both files to adjust the appearance.
 - **Positioning:** Change `.score-bug` styles in `score_display.html` for custom placement.
-- **Team Names:** Modify `teamNameA` in Firebase to customize the home team name.
 
 ---
 
